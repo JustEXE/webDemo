@@ -1,0 +1,398 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.over-flow{
+    overflow: auto; zoom: 1;
+}
+
+.content{
+    background-color: white;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.content .acimgrap{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.content .acimgrap .pla{
+    width: 100%;
+    margin-top: 50%;
+}
+
+.content .acimg{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.text1{
+    padding: 10px 10px 0 10px;
+}
+
+.text2{
+    padding: 0 10px 0 10px;
+    display: none;
+}
+
+.text2 > p > img{
+    width: 100%;
+}
+
+.dis{
+    font-size: 12px;
+    line-height:18px;
+    color: #4e4e4e;
+}
+
+.text2 > p{
+    font-size: 12px;
+    line-height:18px;
+    color: #4e4e4e;
+}
+
+.text .title{
+    font-size: 15px;
+    height: 18px;
+    line-height: 18px;
+}
+
+.text .time{
+    font-size: 12px;
+    height: 18px;
+    line-height:18px;
+}
+
+
+.btnspread{
+    height: 9px;
+    width: 20px;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,0);
+}
+
+.navgation{
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+    border-top: 1px solid whitesmoke;
+    margin-top: 10px;
+    position: relative;
+}
+
+.navgation div{
+    width: 50%;
+    text-align: center;
+    color: #4e4e4e;
+    font-size: 12px;
+}
+
+.navgation div.choiced{
+    color: orange;
+}
+
+
+.navgation .bottomBar{
+    width: 50%;
+    height: 2px;
+    background-color: orange;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.block{
+    width: 100%;
+    height: 10px;
+    background-color: whitesmoke;
+}
+
+.dynamicList{
+    width: 100%;
+}
+
+.dynamicItem{
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid whitesmoke;
+    padding-bottom: 3px;
+}
+
+.dynamicItem .head{
+    position: absolute;
+    left: 6px;
+    top: 13px;
+    width: 37px;
+    height: 37px;
+}
+
+.dynamicItem .award{
+    position: absolute;
+    top:0;
+    right: 0;
+    width: 49px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    background-color: darkorange;
+    color: white;
+    font-size: 14px;
+}
+
+.dynamicItem .dynamiccontent{
+    margin-left: 50px;
+    margin-top: 13px;
+}
+
+.dynamicItem .dynamiccontent .name{
+    color: #4e4e4e;
+}
+
+.dynamicItem .dynamiccontent .dynamicTitle{
+    color: #747474;
+    font-size: 13px;
+    line-height: 15px;
+    margin: 6px 0 12px 0;
+}
+
+.dynamicItem .dynamiccontent .dynamicTitle img{
+    width: 14px;
+    height: 14px;
+}
+
+.dynamicItem .dynamiccontent .imgs{
+    padding-right: 15px;
+
+}
+
+.dynamicItem .dynamiccontent .imgs .imgrap{
+    overflow: hidden;
+    width: 27%;
+    background-color: palegoldenrod;
+    position: relative;
+    float: left;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.dynamicItem .dynamiccontent .imgs .dummy{
+    margin-top: 100%;
+}
+
+.dynamicItem .dynamiccontent .imgs img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+.dynamicItem .dynamiccontent .detail{
+    /*display: flex;*/
+    /*flex-direction: row;*/
+
+    display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;	  /* TWEENER - IE 10 */
+    display: -webkit-flex;	 /* NEW - Chrome */
+    display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+
+    /* 09版 */
+    -webkit-box-orient: horizontal;
+    /* 12版 */
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    -o-flex-direction: row;
+    flex-direction: row;
+
+
+    /*justify-content: space-between;*/
+
+
+    /* 12版 */
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    -ms-justify-content: space-between;
+    -o-justify-content: space-between;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding-right: 15px;
+}
+
+.dynamicItem .dynamiccontent .detail .dynamicOperate{
+    /*display: flex;*/
+    /*flex-direction: row;*/
+
+    display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;	  /* TWEENER - IE 10 */
+    display: -webkit-flex;	 /* NEW - Chrome */
+    display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+    /* 09版 */
+    -webkit-box-orient: horizontal;
+    /* 12版 */
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    -o-flex-direction: row;
+    flex-direction: row;
+
+
+}
+
+.dynamicItem .dynamiccontent .detail .dynamicOperate div{
+    margin: 0 9px;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+
+
+    display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;	  /* TWEENER - IE 10 */
+    display: -webkit-flex;	 /* NEW - Chrome */
+    display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+    /* 09版 */
+    -webkit-box-orient: horizontal;
+    /* 12版 */
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    -o-flex-direction: row;
+    flex-direction: row;
+
+
+    /*align-items: center;*/
+
+    /* 09版 */
+    -webkit-box-align: center;
+    /* 12版 */
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+
+}
+
+
+
+.dynamicItem .dynamiccontent .detail p{
+    color: #747474;
+    font-size: 10px;
+    display: inline-block;
+}
+
+.dynamicItem .dynamiccontent .detail img{
+    width: 12px;
+    height: 12px;
+}
+
+.dynamicItem .dynamiccontent .commentList{
+    list-style: none;
+    background-color: whitesmoke;
+    padding-right: 15px;
+    background-clip: content-box;
+    margin-top: 10px;
+}
+
+
+.dynamicItem .dynamiccontent .commentList li{
+    padding: 5px 3px;
+    position: relative;
+    font-size: 14px;
+    line-height: 15px;
+    color: #969696;
+}
+
+.dynamicItem .dynamiccontent .commentList li img{
+    width: 14px;
+    height: 14px;
+}
+
+.dynamicItem .dynamiccontent .commentList li p, .dynamicItem .dynamiccontent .commentList li span{
+    display: inline-block;
+}
+
+.dynamicItem .dynamiccontent .commentList li p{
+    color: #4e4e4e;
+}
+
+.dynamicItem .dynamiccontent .commentList li span{
+    color: #969696;
+    margin-right: 1px;
+}
+
+.dynamicItem .inputRapper{
+    margin-left: 50px;
+    padding-right: 15px;
+    text-align: right;
+    display: none;
+}
+
+.dynamicItem .inputRapper textarea{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid whitesmoke;
+    outline:none;
+    resize:none
+}
+
+.dynamicItem .inputRapper .submintComment{
+    display: inline-block;
+}
+
+.scropRapper{
+    width: 100%;
+    overflow: hidden;
+}
+
+.newestAndHotest{
+    overflow: hidden;
+}
+
+.newestAndHotest .dynamicList{
+    float: left;
+    /*width: 50%;*/
+}
+
+.attendAct{
+    position: fixed;
+    bottom: 13px;
+    right: 13px;
+}
+
+.attendAct img{
+    width: 67px;
+    height: 67px;
+}
+
+.blockbottom{
+    height: 100px;
+    width: 100%;
+}
+
+.deletelogo{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.deletelogo p{
+    color: #cccac7;
+    margin-top: 5px;
+}

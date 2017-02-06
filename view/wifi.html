@@ -1,0 +1,527 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="css/login.css?20150903193406110010-1425773353"  media="all" rel="stylesheet" />
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <script language="JavaScript" src="js/md5.js?20150903193406110010-1425773353"></script>
+    <script language="JavaScript" src="js/RndSecurityFormat.js?20150903193406110010-1425773353"></script>
+    <script type="text/javascript" src="../../resource/common/jquery.min.js?20150903193406110010-1425773353"></script>
+    <script language="JavaScript" src="../../resource/common/safelogin.js?20150903193406110010-1425773353"></script>
+    <script language="JavaScript" type="text/javascript">
+
+        function MD5(str) { return hex_md5(str); }
+        function stResultInfo(domain, Result, Status, ForceSupport)
+        {
+            this.domain = domain;
+            this.Result = Result;
+            this.Status = Status;
+            this.ForceSupport = ForceSupport;
+        }
+
+        var stResultInfos = new Array(new stResultInfo("InternetGatewayDevice.X_HW_UserInfo","1","0","0"),null);
+        var Infos = stResultInfos[0];
+
+        var FailStat ='0';
+        var LoginTimes = 2;
+        var ProductName = 'HG8145C';
+        var Var_DefaultLang = 'chinese';
+        var Language = "chinese";
+        document.title = ProductName;
+
+        var simcardstatus = '0';
+
+        var manageFlag = '0';
+        var webLoidreg = '0';
+        var webRouteSet = '0';
+        var RouteStatus = '0';
+        var MngtGdct = '0';
+        var MngtJsct = '0';
+        var MngtSzct = '0';
+        var MngtAhct = '0';
+        var MngtOnlineJS = '0';
+        var SimFlag = '0';
+        var PWDLogin = '1';
+
+        var CfgMode ='SCCT';
+        var br0Ip = '192.168.1.1';
+
+        var LockTime = '60';
+        var LockLeftTime = '30';
+        var errloginlockNum = '3';
+        var locklefttimerhandle;
+
+        var CfgFtWordArea = 'NOCHOOSE';
+
+        function AreaRelationInfo(ChineseDes, E8CArea)
+        {
+            this.ChineseDes = ChineseDes;
+            this.E8CArea = E8CArea;
+        }
+
+        var userEthInfos = new Array(new AreaRelationInfo("重庆","023"),
+            new AreaRelationInfo("四川","028"),
+            new AreaRelationInfo("云南","0871"),
+            new AreaRelationInfo("贵州","0851"),
+            new AreaRelationInfo("北京","010"),
+            new AreaRelationInfo("上海","021"),
+            new AreaRelationInfo("天津","022"),
+            new AreaRelationInfo("安徽","0551"),
+            new AreaRelationInfo("福建","0591"),
+            new AreaRelationInfo("甘肃","0931"),
+            new AreaRelationInfo("广东","020"),
+            new AreaRelationInfo("广西","0771"),
+            new AreaRelationInfo("海南","0898"),
+            new AreaRelationInfo("河北","0311"),
+            new AreaRelationInfo("河南","0371"),
+            new AreaRelationInfo("湖北","027"),
+            new AreaRelationInfo("湖南","0731"),
+            new AreaRelationInfo("吉林","0431"),
+            new AreaRelationInfo("江苏","025"),
+            new AreaRelationInfo("江西","0791"),
+            new AreaRelationInfo("辽宁","024"),
+            new AreaRelationInfo("宁夏","0951"),
+            new AreaRelationInfo("青海","0971"),
+            new AreaRelationInfo("山东","0531"),
+            new AreaRelationInfo("山西","0351"),
+            new AreaRelationInfo("陕西","029"),
+            new AreaRelationInfo("西藏","0891"),
+            new AreaRelationInfo("新疆","0991"),
+            new AreaRelationInfo("浙江","0571"),
+            new AreaRelationInfo("黑龙江","0451"),
+            new AreaRelationInfo("内蒙古","0471"),
+            null);
+
+        function GetE8CAreaByCfgFtWord(userEthInfos,name)
+        {
+            var length = userEthInfos.length;
+
+            for( var i = 0; i <  length - 1; i++)
+            {
+                if(name == userEthInfos[i].E8CArea)
+                {
+                    return userEthInfos[i].ChineseDes;
+                }
+            }
+
+            return null;
+        }
+
+        var CfgFtChineseArea = GetE8CAreaByCfgFtWord(userEthInfos,CfgFtWordArea);
+
+        function SubmitForm() {
+            var Username = document.getElementById('user_name');
+            var Password = document.getElementById('password');
+            var appName = navigator.appName;
+            var version = navigator.appVersion;
+
+            if (appName == "Microsoft Internet Explorer")
+            {
+                var versionNumber = version.split(" ")[3];
+                if (parseInt(versionNumber.split(";")[0]) < 6)
+                {
+                    alert("不支持IE6.0以下版本。");
+                    return;
+                }
+            }
+
+            if( 1 != PWDLogin )
+            {
+                if (Username.value == "")
+                {
+                    alert("用户名不能为空。");
+                    Username.focus();
+                    return false;
+                }
+
+                if (!isValidAscii(Username.value))
+                {
+                    alert("用户名包含非法字符.");
+                    Username.focus();
+                    return false;
+                }
+            }
+
+            if (Password.value == "") {
+                alert("密码不能为空。");
+                Password.focus();
+                return false;
+            }
+            if (!isValidAscii(Password.value))
+            {
+                alert("密码包含非法字符。");
+                Password.focus();
+                return false;
+            }
+
+            var cookie = document.cookie;
+            if ("" != cookie)
+            {
+                var date=new Date();
+                date.setTime(date.getTime()-10000);
+                var cookie22 = cookie + ";expires=" + date.toGMTString();
+                document.cookie=cookie22;
+            }
+
+            var cnt;
+
+            $.ajax({
+                type : "POST",
+                async : false,
+                cache : false,
+                url : '/asp/GetRandCount.asp',
+                success : function(data) {
+                    cnt = data;
+                }
+            });
+
+            var Form = new webSubmitForm();
+            if (SimFlag==1)
+            {
+                var cookie2 = "Cookie=" + "simun="+base64encode(Username.value)+":"+"simcn=" + base64encode(Password.value) + ":" + "Cookie=" + "UserName:" + Username.value + ":" + "PassWord:" + base64encode(Password.value) + ":" + "Language:" + Language + ":SubmitType=Login" + ":" + "id=-1;path=/";
+            }
+            else
+            {
+                var cookie2 = "Cookie=" + "UserName:" + Username.value + ":" + "PassWord:" + base64encode(Password.value) + ":" + "Language:" + Language + ":SubmitType=Login" + ":" + "id=-1;path=/";
+            }
+            document.cookie = cookie2;
+            Username.disabled = true;
+            Password.disabled = true;
+
+            Form.addParameter('x.X_HW_Token', cnt);
+            Form.setAction('/login.cgi');
+            Form.submit();
+            return true;
+        }
+
+        function SubmitRouteSet() {
+
+            var Username = document.getElementById('user_name');
+            var Password = document.getElementById('password');
+            var appName = navigator.appName;
+            var version = navigator.appVersion;
+
+            if (appName == "Microsoft Internet Explorer")
+            {
+                var versionNumber = version.split(" ")[3];
+                if (parseInt(versionNumber.split(";")[0]) < 6)
+                {
+                    alert("不支持IE6.0以下版本。");
+                    return;
+                }
+            }
+
+            if( 1 != PWDLogin )
+            {
+                if (Username.value == "")
+                {
+                    alert("用户名不能为空。");
+                    Username.focus();
+                    return false;
+                }
+
+                if (!isValidAscii(Username.value))
+                {
+                    alert("用户名包含非法字符.");
+                    Username.focus();
+                    return false;
+                }
+            }
+
+            if (Password.value == "") {
+                alert("密码不能为空。");
+                Password.focus();
+                return false;
+            }
+            if (!isValidAscii(Password.value))
+            {
+                alert("密码包含非法字符。");
+                Password.focus();
+                return false;
+            }
+
+            var cookie = document.cookie;
+            if ("" != cookie)
+            {
+                var date=new Date();
+                date.setTime(date.getTime()-10000);
+                var cookie22 = cookie + ";expires=" + date.toGMTString();
+                document.cookie=cookie22;
+            }
+            var cnt;
+
+            $.ajax({
+                type : "POST",
+                async : false,
+                cache : false,
+                url : '/asp/GetRandCount.asp',
+                success : function(data) {
+                    cnt = data;
+                }
+            });
+            var Form = new webSubmitForm();
+            var cookie2 = "Cookie=" + "UserName:" + Username.value + ":" + "PassWord:" + base64encode(Password.value) + ":" + "Language:" + Language  + ":SubmitType=SetRoute"+":" +"id=-1;path=/";
+            document.cookie = cookie2;
+            Username.disabled = true;
+            Password.disabled = true;
+            Form.addParameter('x.X_HW_Token', cnt);
+            Form.setAction('/login.cgi');
+            Form.submit();
+
+        }
+
+        function ResultStatusSt(domain, Result, Status)
+        {
+            this.domain = domain;
+            this.Result = Result;
+            this.Status  = Status;
+        }
+
+        var ResultStatusInfo = new Array(new ResultStatusSt("0","0","0"),null);
+
+        function requestCgi()
+        {
+            $.ajax({
+                type : "POST",
+                async : true,
+                cache : false,
+                url : "asp/GetResultStatus.asp",
+                success : function(data) {
+                    ResultStatusInfo=eval(data);
+                }
+            });
+
+            if (((parseInt(ResultStatusInfo.Status) == 0) && (parseInt(ResultStatusInfo.Result) == 1)))
+            {
+                setDisable('regdevice', 1);
+                clearInterval(TimerHandle);
+            }
+        }
+
+        function LoadFrame() {
+
+            if ('HUBCT' == CfgMode.toUpperCase())
+            {
+                document.getElementById('user_name').value = 'useradmin';
+                document.getElementById('password').focus();
+            }
+            else
+            {
+                document.getElementById('user_name').focus();
+            }
+
+            if ((LoginTimes != null) && (LoginTimes != '') && (LoginTimes > 0)) {
+                document.getElementById('loginfail').style.display = '';
+            }
+            if( "1" == FailStat)
+            {
+                document.getElementById('loginfail').style.display = '';
+                setDisable('cancel',1);
+                setDisable('save',1);
+                setDisable('user_name',1);
+                setDisable('password',1);
+                if (webRouteSet == 1)
+                {
+                    setDisable('routeSet',1);
+                }
+            }
+
+            init();
+
+            if (LoginTimes >= errloginlockNum)
+            {
+                setDisable('cancel',1);
+                setDisable('save',1);
+                setDisable('user_name',1);
+                setDisable('password',1);
+
+                if (webRouteSet == 1)
+                {
+                    setDisable('routeSet',1);
+                }
+            }
+        }
+        function init() {
+            if (document.addEventListener) {
+                document.addEventListener("keypress", onHandleKeyDown, false);
+            } else {
+                document.onkeypress = onHandleKeyDown;
+            }
+        }
+        function onHandleKeyDown(event) {
+            var e = event || window.event;
+            var code = e.charCode || e.keyCode;
+
+            if (code == 13) {
+                SubmitForm();
+            }
+        }
+
+        function canceltext()
+        {
+            document.getElementById('user_name').value = "";
+            document.getElementById('password').value = "";
+        }
+
+        function JumpToReg()
+        {
+            if ((Infos != null) && (parseInt(Infos.Result) == 1) && ((parseInt(Infos.Status) == 0) || (1 == MngtGdct)))
+            {
+                window.location="/loidgregsuccess.asp";
+            }
+            else
+            {
+                if ( 'CQCT' == CfgMode.toUpperCase())
+                {
+                    if (confirm("按要求安装顺序为：先不插入光纤，输入LOID点击\"提交\"按钮后再插入光纤进行注册。"))
+                    {
+                        window.location="/loidreg.asp";
+                    }
+                }
+                else
+                {
+                    window.location="/loidreg.asp";
+                }
+            }
+        }
+
+        function showlefttime()
+        {
+            if(LockLeftTime <= 0)
+            {
+                window.location="/login.asp";
+                clearInterval(locklefttimerhandle);
+                return;
+            }
+
+            var html = '您登录失败的次数已超出限制，请' +  LockLeftTime + '秒后重试！';
+            SetDivValue("loginfail", html);
+            LockLeftTime = LockLeftTime - 1;
+        }
+
+    </script>
+</head>
+<body onload="LoadFrame();">
+<div class = "wraplogin">
+    <div id="top" style="width:100%;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td>
+                    <script language="javascript">
+                        if(CfgFtWordArea.toUpperCase() != 'NOCHOOSE' && CfgFtWordArea.toUpperCase() != 'CHOOSE' && CfgFtWordArea.toUpperCase() != '')
+                        {
+                            document.write('<div style="margin-top:50px;margin-left:-60px"><span style="font-weight:bolder;color:#0436A5;">您的省份：<font style="color:#FF0000">'+CfgFtChineseArea+'</font>'+
+                                '&nbsp;&nbsp;&nbsp;&nbsp;更改请<a href="/loidchoosearea.asp">点击&gt;&gt;</a></span></div>');
+                        }
+                        else if( CfgFtWordArea.toUpperCase() == 'CHOOSE' )
+                        {
+                            document.write('<div style="margin-top:50px;margin-left:-80px"><span style="font-weight:bolder;color:#0436A5;">您没有选择省份</span></div>');
+                        }
+
+                    </script>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="logincenter">
+        <li class="title_index" style="color:#FFFFFF; position:absolute; top:75px; left:20px;">欢迎使用天翼宽带家庭网关</li>
+        <li class="content_word" style="color:#FFFFFF; position:absolute; top:100px; left:-25px;">请输入用户名、密码登录</li>
+    </div>
+    <div class="login_word">
+        <div class="w_text" style="color:#FFFFFF; position:absolute; top:35px; left:-80px;">
+            <ul style="position:absolute; top:-8px; left:50px;">
+                <li class="left_table" ><div align="left">用户 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+                <li class="left_table" ><div align="left">密码 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+            </ul>
+            <ul style="color:#FFFFFF; position:absolute; top:-8px; left:-5px;">
+                <li class="right_table"><input name="user_name" id="user_name" class="board" type="text" size="20" style="font-size: 13px;" /></li>
+                <li class="right_table"><input name="password" id="password" class="board" type="password" size="20" style="font-size: 13px;" /></li>
+                <li class="errorinfo" ><span id ="loginfail" style="display:none;">
+<script language="javascript">
+clearInterval(locklefttimerhandle);
+if('1' == FailStat)
+{
+    SetDivValue("loginfail", "您登录失败的次数已超出限制。");
+}
+else if (LoginTimes > 0 && LoginTimes < errloginlockNum)
+{
+    SetDivValue("loginfail", "密码输入错误，请重新输入。");
+}
+else if (LoginTimes >= errloginlockNum && parseInt(LockLeftTime) > 0)
+{
+    var html = '您登录失败的次数已超出限制，请' +  LockLeftTime + '秒后重试！';
+    SetDivValue("loginfail", html);
+    locklefttimerhandle = setInterval('showlefttime()', 1000);
+}
+else
+{
+    document.getElementById('loginfail').style.display = 'none';
+}
+</script>
+</span></li>
+            </ul>
+            <script type="text/javascript" language="javascript">
+                if (webRouteSet == 1)
+                {
+                    document.write('<li class="login_button"><input type="button" style="position:absolute; top:0px; left:-95px;font-size: 13px;" id="routeSet" name="routeSet" onClick="SubmitRouteSet();" value="路由设置" ></li>');
+                    if (1 == RouteStatus)
+                    {
+                        setDisable('routeSet',1);
+                    }
+                }
+
+                document.write('<li class="login_button"><input type="button" style="position:absolute; top:0px; left:25px;font-size: 13px;" id="save" name="save" onClick="SubmitForm();" value="登录" ></li>');
+                document.write('<li class="login_button"><input type="button" style="position:absolute; top:0px; left:115px;font-size: 13px;" id="cancel" name="cancel" onclick="canceltext();" value="取消">');
+
+                if (0 != simcardstatus)
+                {
+                    ;
+                }
+                else if (('E8C' == CfgMode.toUpperCase() && CfgFtWordArea.toUpperCase() == 'NOCHOOSE'))
+                {
+                    ;
+                }
+                else
+                {
+                    if ((manageFlag != 1) || (webLoidreg == 1))
+                    {
+                        if ((Infos != null) && (((parseInt(Infos.Status) == 0) && (parseInt(Infos.Result) == 1)) )
+                            && ((1 == MngtJsct) || (1 == MngtSzct)))
+                        {
+                            MngtOnlineJS=0;
+                            document.write('<li class="login_button"><input type="button" style="position:absolute; top:0px; left:195px;font-size: 13px;" id="regdevice" name="regdevice" disabled="disabled" onClick="JumpToReg();" value="设备注册" ></li>');
+                        }
+                        else if ((Infos != null) && (((parseInt(Infos.Status) == 0) && (parseInt(Infos.Result) == 1)) || (parseInt(Infos.Status) == 5))
+                            && (1 == MngtAhct) )
+                        {
+                            MngtOnlineJS=0;
+                        }
+                        else
+                        {
+                            document.write('<li class="login_button"><input type="button" style="position:absolute; top:0px; left:195px;font-size: 13px;" id="regdevice" name="regdevice" onClick="JumpToReg();" value="设备注册" ></li>');
+                            if (LoginTimes >= errloginlockNum)
+                            {
+                                setDisable('regdevice',1);
+                            }
+                        }
+                    }
+
+                    if(1 == MngtOnlineJS)
+                    {
+                        var TimerHandle = setInterval("requestCgi()", 5000);
+                    }
+                }
+
+            </script>
+            </li>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

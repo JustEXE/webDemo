@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--针对移动端优化显示-->
+    <meta name="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1,
+           minimum-scale=1, width=device-width, height=device-height"/>
+    <title>活动</title>
+    <link rel="stylesheet" href="../css/activityList.css">
+    <script src="../js/jquery-3.1.1.js"></script>
+    <script src="../js/jquery-lazyload.js"></script>
+</head>
+<body>
+<ul class="activityList">
+    <!--<li class="item">-->
+    <!--<div>-->
+    <!--<p class="title">我运动我快乐</p>-->
+    <!--<div class="imgRapper">-->
+    <!--<div class="plac"></div>-->
+    <!--<img src="http://test.leeonedu.com/Public/H5/img/or.png" alt="" class="activityImg">-->
+    <!--</div>-->
+    <!--<p class="activityTime">活动时间：&#45;&#45;&#45;&#45;&#45;&#45;</p>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<p class="checkDetail">查看详情</p>-->
+    <!--<img src="http://test.leeonedu.com/Public/H5/img/icon_read.png" alt="" class="readImg">-->
+    <!--</div>-->
+    <!--</li>-->
+</ul>
+<script>
+    var schoolId = 5;
+    $(document).ready(function () {
+        var activityList = $(".activityList");
+        //活动列表
+        $.ajax({
+            type: "POST",
+            url: "http://test.leeonedu.com/api/Activity/GetList",
+            dataType: 'json',
+            data: {
+                schoolId: schoolId
+            },
+            success: function (data) {
+                if (data && data.code == 200) {
+                    console.log(data);
+                    var list = data.data;
+                    for (var i = 0; i < list.length; i++) {
+                        var item = list[i];
+                        activityList.append(
+                            '<li class="item" activityId="' + item.id + '">' +
+                            '<div>' +
+                            '<p class="title">' + item.title + '</p>' +
+                            '<div class="imgRapper">' +
+                            '<div class="plac"></div>' +
+                            '<img src="http://test.leeonedu.com/Public/H5/img/loadingMobile.gif" data-original="' + item.imagePath + '" alt="" class="activityImg lazy">' +
+                            '</div>' +
+                            '<p class="activityTime">活动时间：' + activityTime(item.startTime) + '</p>' +
+                            '</div>' +
+                            '<div>' +
+                            '<p class="checkDetail">查看详情</p>' +
+                            '<img src="http://test.leeonedu.com/Public/H5/img/icon_read.png" alt="" class="readImg">' +
+                            '</div>' +
+                            '</li>'
+                        )
+                    }
+                    imgLazy();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("ajax请求失败---status:" + status + "  error:" + error);
+            }
+        });
+
+        $(".activityList").on('click', '.item', function () {
+            window.localStorage.activityId = $(this).attr('activityId');
+            window.location.href = "activityDetail.html";
+        });
+
+        function activityTime(nS) {
+            function formatDate(now) {
+                var month = now.getMonth() + 1;
+                var date = now.getDate();
+                var hour = now.getHours();
+                var minute = now.getMinutes();
+                return numberChange(month) + "月" + numberChange(date) + "日" + numberChange(hour) + ":" + numberChange(minute);
+            }
+
+            var d = new Date(parseInt(nS) * 1000);
+            return formatDate(d);
+        }
+
+        function numberChange(num) {
+            return num < 10 ? "0" + num : num;
+        }
+
+        function imgLazy() {
+            $("img.lazy").lazyload({
+                effect: "show",
+                threshold: 100,
+                skip_invisible: false,
+                failure_limit: 10
+            });
+        }
+    });
+</script>
+</body>
+</html>

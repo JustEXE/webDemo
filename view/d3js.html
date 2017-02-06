@@ -1,0 +1,187 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>D3测试</title>
+    <script type="text/javascript" src="../js/d3.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.1.1.js"></script>
+    <style type="text/css">
+        div.bar {
+            display: inline-block;
+            width: 20px;
+            margin-right: 2px;
+            background-color: teal;
+        }
+
+        .pumpkin {
+            fill: yellow;
+            stroke: orange;
+            stroke-width: 5;
+        }
+        p {
+            width: 100px;
+            height: 50px;
+            background: yellowgreen;
+            border: 1px solid blue;
+            resize: both;
+            overflow: auto;
+        }
+        .cccc {
+            background: red;
+            width: 50%;
+            height: 300px;
+            border: 2px solid;
+            font-size: 50px;
+            border-radius: 25px;
+            border-image: url("http://www.w3school.com.cn/i/border.png") 30 30 round;
+            text-shadow: 5px 5px 5px blue;
+            transition: width 2s, height 2s;
+            -moz-transition:width 2s, height 2s, -moz-transform 2s; /* Firefox 4 */
+            -webkit-transition:width 2s, height 2s, -webkit-transform 2s; /* Safari and Chrome */
+            -o-transition:width 2s, height 2s, -o-transform 2s; /* Opera */
+        }
+        .cccc:hover{
+            width: 100px;
+            height: 100px;
+            transform:rotate(180deg);
+            -moz-transform:rotate(180deg); /* Firefox 4 */
+            -webkit-transform:rotate(180deg); /* Safari and Chrome */
+            -o-transform:rotate(180deg); /* Opera */
+        }
+        @-webkit-keyframes anmy {
+            /*from{*/
+                /*background: red;*/
+            /*}*/
+            /*to{*/
+                /*background: blue;*/
+            /*}*/
+            0% {background: red;left: 0px;right: 0px}
+            25% {background: yellow; left:200px;top: 0px}
+            50% {background: blue;left: 200px;top: 200px}
+            75% {background: green;left: 0px;top: 200px}
+            100% {background: red;left: 0px;top:0px}
+        }
+        .aaaa{
+            width:100px;
+            height:100px;
+            background:red;
+            position:relative;
+            /* Safari and Chrome: */
+            -webkit-animation-name:anmy;
+            -webkit-animation-duration:5s;
+            -webkit-animation-timing-function:linear;
+            -webkit-animation-delay:0.5s;
+            -webkit-animation-iteration-count:infinite;
+            -webkit-animation-direction:alternate;
+            -webkit-animation-play-state:running;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    //d3.select("body").append("p").text("New paragraph!");
+    var dataset = d3.range(25).map(function () {
+        return d3.round(d3.random.normal(15, 8)(), 1);
+    });
+    d3.select("body").selectAll("p")
+        .data(dataset)
+        .enter()
+        .append("div")
+        .attr("class", "bar")
+        .text(function (d, i) {
+            return (i + 1) + "," + d;
+        })
+        .style("color", function (d) {
+            if (d > 15) {
+                return "red";
+            } else {
+                return "black";
+            }
+        })
+        .style("height", function (d) {
+            return (d * 20) + "px";
+        })
+        .style("width", function (d) {
+            return "70px";
+        });
+</script>
+<br><br><br>
+<svg width=500 height=960>
+
+    <rect x="0" y="0" width="500" height="50"></rect>
+    <ellipse cx="250" cy="225" rx="100" ry="25"></ellipse>
+    <line x1="0" y1="120" x2="500" y2="50" stroke="black"></line>
+    <text x="250" y="155" font-family="sans-serif"
+          font-size="25" fill="gray">Easy-peasy
+    </text>
+    <circle cx="25" cy="80" r="20"
+            fill="rgba(128, 0, 128, 0.75)"
+            stroke="rgba(0, 255, 0, 0.25)"
+            stroke-width="100"></circle>
+    <circle cx="75" cy="80" r="20"
+            fill="rgba(0, 255, 0, 0.75)"
+            stroke="rgba(0, 0, 255, 0.25)" stroke-width="10"></circle>
+    <circle cx="125" cy="80" r="20"
+            fill="rgba(255, 255, 0, 0.75)"
+            stroke="rgba(255, 0, 0, 0.25)" stroke-width="10"></circle>
+    <rect x="0" y="300" width="30" height="30" fill="purple"></rect>
+    <rect x="20" y="305" width="30" height="30" fill="blue"></rect>
+    <rect x="40" y="310" width="30" height="30" fill="green"></rect>
+    <rect x="60" y="315" width="30" height="30" fill="yellow"></rect>
+    <rect x="80" y="320" width="30" height="30" fill="red"></rect>
+    <circle cx="25" cy="425" r="22" class="pumpkin"></circle>
+    <circle cx="25" cy="525" r="20" fill="rgba(128, 0, 128, 1.0)"></circle>
+    <circle cx="50" cy="525" r="20" fill="rgba(0, 0, 255, 0.75)"></circle>
+    <circle cx="75" cy="525" r="20" fill="rgba(0, 255, 0, 0.5)"></circle>
+    <circle cx="100" cy="525" r="20" fill="rgba(255, 255, 0, 0.25)"></circle>
+    <circle cx="125" cy="525" r="20" fill="rgba(255, 0, 0, 0.1)"></circle>
+    <circle cx="25" cy="625" r="20" fill="purple"
+            stroke="green" stroke-width="10"
+            opacity="0.9"></circle>
+    <circle cx="65" cy="625" r="20" fill="green"
+            stroke="blue" stroke-width="10"
+            opacity="0.5"></circle>
+    <circle cx="105" cy="625" r="20" fill="yellow"
+            stroke="red" stroke-width="10"
+            opacity="0.1"></circle>
+</svg>
+<br>
+<script type="text/javascript">
+    var w = 500;
+    var h = 50;
+    var dataset = d3.range(8).map(function () {
+        return d3.round(d3.random.normal(15, 2)(), 1);
+    });
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", 500)
+        .attr("height", 50);
+
+    var circles = svg.selectAll("circle")
+        .data(dataset)
+        .enter()
+        .append("circle");
+
+    circles.attr("cx", function (d, i) {
+        return (i * 50) + 25;
+    })
+        .attr("cy", h / 2)
+        .attr("r", function (d) {
+            return d;
+        })
+        .text(function (d, i) {
+            return i + "," + d;
+        });
+</script>
+<script>
+    $(document).ready(function () {
+        $("p").click(function () {
+            $(this).hide();
+        });
+    });
+
+</script>
+<p id="clickdis" style="width: 50%">点击了就消失</p>
+<p class="aaaa">动画</p>
+<p class="cccc">class样式</p>
+</body>
+</html>
